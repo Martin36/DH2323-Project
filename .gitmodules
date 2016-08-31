@@ -1,0 +1,3 @@
+[submodule "dgi14_project"]
+	path = dgi14_project
+	url = https://github.com/dmitrijl/dgi14_project.git
