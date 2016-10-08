@@ -12,7 +12,7 @@ public class TreeDistribution : MonoBehaviour {
 	public int nrOfPlants = 25;
 	public Slider plantSlider;    //Slider to change the nr of plants in scene
 	public bool nonRandom = false;
-
+	public bool startSimulation = false;
 
 	private Renderer rend;
 	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
@@ -20,9 +20,11 @@ public class TreeDistribution : MonoBehaviour {
 	private float r;                          //Radius of the plant
 	private int nrOfRows, nrOfCols;
 	private List<GameObject> plants;
-
+	private TreeGrowthSimulation simulator;
 
 	void Start () {
+		simulator = GetComponent<TreeGrowthSimulation>();
+
 		plantSlider.onValueChanged.AddListener(delegate { OnSliderChange(); });
 		plants = new List<GameObject>();
 
@@ -39,6 +41,16 @@ public class TreeDistribution : MonoBehaviour {
 		r = tree.GetComponent<Renderer>().bounds.max.x - tree.GetComponent<Renderer>().bounds.min.x + 10;    //radius is max - min coordinate
 		Debug.Log(r);
 		InitDistribution();
+
+	}
+
+	void Update()
+	{
+		if (startSimulation)
+		{
+			simulator.StartSimulation(plants);
+			startSimulation = false;
+		}
 	}
 
 	void OnSliderChange()
