@@ -8,9 +8,9 @@ using System.Collections.Generic;
 public class TreeGrowthSimulation : MonoBehaviour {
 
 	private List<GameObject> plants;
-	public bool simulationOn = false;
+	private bool simulationOn = false;
 	private float maxRadius = 100f;
-	private float growthSpeed = 1;
+	private float growthSpeed = 0.1f;
 
 	void Start () {
 		
@@ -48,6 +48,8 @@ public class TreeGrowthSimulation : MonoBehaviour {
 		float radiusIncrease = growthSpeed * Time.deltaTime;
 		float procIncrease = (currentRadius + radiusIncrease) / currentRadius;		//The procuental increase of the radius, need for sprite scaling
 		plant.GetComponent<CircleCollider2D>().radius += radiusIncrease;
-		plant.transform.localScale = new Vector3(procIncrease, procIncrease, procIncrease);		//Scales the sprite
+		Vector3 oldLocalScale = plant.transform.localScale;
+		Vector3 newLocalScale = new Vector3(oldLocalScale.x * procIncrease, oldLocalScale.y * procIncrease, oldLocalScale.z);
+		plant.transform.localScale = newLocalScale;
 	}
 }

@@ -24,7 +24,7 @@ public class CollisionHandler : MonoBehaviour {
 		if (circleColliderOther != null)
 			otherRadius = circleColliderOther.radius;
 
-		if(radius < otherRadius)
+		if(radius <= otherRadius)
 		{
 			Destroy(gameObject);
 		}
