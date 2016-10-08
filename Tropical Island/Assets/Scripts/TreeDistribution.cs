@@ -10,7 +10,9 @@ public class TreeDistribution : MonoBehaviour {
 
 	public GameObject tree;
 	public int nrOfPlants = 25;
-	public Slider plantSlider;		//Slider to change the nr of plants in scene
+	public Slider plantSlider;    //Slider to change the nr of plants in scene
+	public bool nonRandom = false;
+
 
 	private Renderer rend;
 	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
@@ -34,8 +36,8 @@ public class TreeDistribution : MonoBehaviour {
 		width = xMax - xMin;
 		height = yMax - yMin;
 
-		r = tree.GetComponent<Renderer>().bounds.max.x - tree.GetComponent<Renderer>().bounds.min.x;    //radius is max - min coordinate
-
+		r = tree.GetComponent<Renderer>().bounds.max.x - tree.GetComponent<Renderer>().bounds.min.x + 10;    //radius is max - min coordinate
+		Debug.Log(r);
 		InitDistribution();
 	}
 
@@ -72,11 +74,18 @@ public class TreeDistribution : MonoBehaviour {
 		{
 			for(int j = 1; j < rows; j++)
 			{
-				float xPos = x + dx * i + (dx / 2) * Random.Range(-1f, 1f) - r;				//remove r to avoid collsion
-				float yPos = y + dy * j + (dy / 2) * Random.Range(-1f, 1f) - r;
+				float xPos, yPos;
 
-				//float xPos = x + dx * i;
-				//float yPos = y + dy * j;
+				if (nonRandom)
+				{
+					xPos = x + dx * i;
+					yPos = y + dy * j;
+				}
+				else
+				{
+					xPos = x + dx * i + (dx / 2) * Random.Range(-1f, 1f) - r;       //remove r to avoid collsion
+					yPos = y + dy * j + (dy / 2) * Random.Range(-1f, 1f) - r;
+				}
 
 				SpawnTree(xPos, yPos);
 			}
@@ -92,7 +101,9 @@ public class TreeDistribution : MonoBehaviour {
 	{
 		plants.Add(Instantiate(tree, new Vector3(x, y, 0.1f), Quaternion.identity) as GameObject);
 	}
-
+	/// <summary>
+	/// 
+	/// </summary>
 	void DeletePlants()
 	{
 		foreach(GameObject plant in plants)
