@@ -12,7 +12,9 @@ public class TreeDistribution : MonoBehaviour {
 	public int nrOfPlants = 25;
 	public Slider plantSlider;    //Slider to change the nr of plants in scene
 	public bool nonRandom = false;
-	public bool startSimulation = false;
+	private bool startSimulation = false;
+	public Button startSimButton;
+
 
 	private Renderer rend;
 	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
@@ -24,6 +26,10 @@ public class TreeDistribution : MonoBehaviour {
 
 	void Start () {
 		simulator = GetComponent<TreeGrowthSimulation>();
+
+		startSimButton.onClick.AddListener(StartSimulation);
+		startSimButton.gameObject.GetComponentInChildren<Text>().text = "Start Simulation";
+
 
 		plantSlider.onValueChanged.AddListener(delegate { OnSliderChange(); });
 		plants = new List<GameObject>();
@@ -39,18 +45,19 @@ public class TreeDistribution : MonoBehaviour {
 		height = yMax - yMin;
 
 		r = tree.GetComponent<Renderer>().bounds.max.x - tree.GetComponent<Renderer>().bounds.min.x + 10;    //radius is max - min coordinate
-		Debug.Log(r);
+
 		InitDistribution();
 
 	}
 
+	void StartSimulation()
+	{
+		simulator.StartSimulation(plants);
+		startSimulation = false;
+	}
+
 	void Update()
 	{
-		if (startSimulation)
-		{
-			simulator.StartSimulation(plants);
-			startSimulation = false;
-		}
 	}
 
 	void OnSliderChange()
@@ -111,7 +118,7 @@ public class TreeDistribution : MonoBehaviour {
 	/// <param name="y">y-coordinate</param>
 	void SpawnTree(float x, float y)
 	{
-		plants.Add(Instantiate(tree, new Vector3(x, y, 0.1f), Quaternion.identity) as GameObject);
+		plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
 	}
 	/// <summary>
 	/// 

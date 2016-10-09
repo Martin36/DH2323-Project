@@ -10,7 +10,7 @@ public class TreeGrowthSimulation : MonoBehaviour {
 	private List<GameObject> plants;
 	private bool simulationOn = false;
 	private float maxRadius = 100f;
-	private float growthSpeed = 0.1f;
+	private float growthSpeed = 10f;
 
 	void Start () {
 		
@@ -25,11 +25,18 @@ public class TreeGrowthSimulation : MonoBehaviour {
 	void Update () {
 		if (simulationOn)
 		{
-			foreach(GameObject plant in plants)
+			for(int i = plants.Count-1; i >= 0; i--)
 			{
+				GameObject plant = plants[i];
 				//Domination check is done by colliders
+				if (plant.GetComponent<CollisionHandler>().IsDominated)
+				{
+					plants.RemoveAt(i);
+					Destroy(plant);
+				}
+
 				//Check if radius has not reached its maximum
-				if(plant.GetComponent<CircleCollider2D>().radius <= maxRadius)
+				else if(plant.GetComponent<CircleCollider2D>().radius <= maxRadius)
 				{
 					//Then increase the size of the plant
 					Grow(plant);
@@ -44,12 +51,13 @@ public class TreeGrowthSimulation : MonoBehaviour {
 	/// <param name="plant"></param>
 	void Grow(GameObject plant)
 	{
-		float currentRadius = plant.GetComponent<CircleCollider2D>().radius;
 		float radiusIncrease = growthSpeed * Time.deltaTime;
-		float procIncrease = (currentRadius + radiusIncrease) / currentRadius;		//The procuental increase of the radius, need for sprite scaling
-		plant.GetComponent<CircleCollider2D>().radius += radiusIncrease;
+
 		Vector3 oldLocalScale = plant.transform.localScale;
-		Vector3 newLocalScale = new Vector3(oldLocalScale.x * procIncrease, oldLocalScale.y * procIncrease, oldLocalScale.z);
+		Vector3 newLocalScale = new Vector3(oldLocalScale.x + radiusIncrease, oldLocalScale.y + radiusIncrease, oldLocalScale.z);
 		plant.transform.localScale = newLocalScale;
+
+
+		//Debug.Log(plant.transform.localScale.x / plant.GetComponent<CircleCollider2D>().radius);
 	}
 }
