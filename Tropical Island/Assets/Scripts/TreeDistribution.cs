@@ -14,6 +14,7 @@ public class TreeDistribution : MonoBehaviour {
 	public bool linearGrid = false;
 	public Button startSimButton;
 	public Button stopSimButton;
+	public bool randomizeRadius = false;
 
 	private Renderer rend;
 	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
@@ -23,7 +24,7 @@ public class TreeDistribution : MonoBehaviour {
 	private List<GameObject> plants;
 	private TreeGrowthSimulation simulator;
 	private bool simulationRunning = false;
-
+	private float scaling = 2f;							//How much the radius of the trees will be scaled if randomizeRadius is active
 
 	void Start () {
 		simulator = GetComponent<TreeGrowthSimulation>();
@@ -47,8 +48,8 @@ public class TreeDistribution : MonoBehaviour {
 		width = xMax - xMin;
 		height = yMax - yMin;
 
-		r = tree.GetComponent<Renderer>().bounds.max.x - tree.GetComponent<Renderer>().bounds.min.x + 10;    //radius is max - min coordinate
-
+		r = tree.GetComponent<Renderer>().bounds.extents.magnitude;    //radius is max - min coordinate
+		//Debug.Log(r);
 		InitDistribution();
 
 	}
@@ -139,7 +140,19 @@ public class TreeDistribution : MonoBehaviour {
 	/// <param name="y">y-coordinate</param>
 	void SpawnTree(float x, float y)
 	{
-		plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+		if (randomizeRadius)
+		{
+			float radiusAdjustment = Random.Range(-scaling * r, scaling * r);
+			Vector3 oldScale = tree.transform.localScale;
+			Vector3 newScale = new Vector3(oldScale.x + radiusAdjustment, oldScale.y + radiusAdjustment, oldScale.z);
+			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+			plants[plants.Count - 1].transform.localScale = newScale;
+		}
+		else
+		{
+			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+		}
+
 	}
 	/// <summary>
 	/// 

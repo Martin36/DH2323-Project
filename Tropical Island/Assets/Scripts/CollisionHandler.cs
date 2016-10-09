@@ -8,17 +8,14 @@ public class CollisionHandler : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-	//	Debug.Log("collision enter!");
 		//check which of the objects is the largest
-		float radius = GetComponent<CircleCollider2D>().radius;
-		float otherRadius = 0;
-		var circleColliderOther = other.transform.GetComponent<CircleCollider2D>();
-		if (circleColliderOther != null)
-			otherRadius = circleColliderOther.radius;
+		
+		float radius = GetComponent<Renderer>().bounds.extents.magnitude;    //radius is max - min coordinate
+		
+		float otherRadius = other.transform.GetComponent<Renderer>().bounds.extents.magnitude;
 
 		if(radius <= otherRadius)
 		{
-			//			Destroy(gameObject);
 			isDominated = true;
 		}
 		

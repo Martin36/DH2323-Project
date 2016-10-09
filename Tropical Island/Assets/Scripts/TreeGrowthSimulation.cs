@@ -9,7 +9,7 @@ public class TreeGrowthSimulation : MonoBehaviour {
 
 	private List<GameObject> plants;
 	private bool simulationOn = false;
-	private float maxRadius = 100f;
+	private float maxRadius = 50f;
 	private float growthSpeed = 10f;
 
 	void Start () {
@@ -33,6 +33,7 @@ public class TreeGrowthSimulation : MonoBehaviour {
 			for(int i = plants.Count-1; i >= 0; i--)
 			{
 				GameObject plant = plants[i];
+				Renderer rend = plant.GetComponent<Renderer>();
 				//Domination check is done by colliders
 				if (plant.GetComponent<CollisionHandler>().IsDominated)
 				{
@@ -41,7 +42,7 @@ public class TreeGrowthSimulation : MonoBehaviour {
 				}
 
 				//Check if radius has not reached its maximum
-				else if(plant.GetComponent<CircleCollider2D>().radius <= maxRadius)
+				else if(rend.bounds.extents.magnitude <= maxRadius)
 				{
 					//Then increase the size of the plant
 					Grow(plant);
