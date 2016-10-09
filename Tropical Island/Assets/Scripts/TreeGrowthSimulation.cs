@@ -22,6 +22,11 @@ public class TreeGrowthSimulation : MonoBehaviour {
 		simulationOn = true;
 	}
 
+	public void StopSimulation()
+	{
+		simulationOn = false;
+	}
+
 	void Update () {
 		if (simulationOn)
 		{

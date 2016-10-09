@@ -11,10 +11,9 @@ public class TreeDistribution : MonoBehaviour {
 	public GameObject tree;
 	public int nrOfPlants = 25;
 	public Slider plantSlider;    //Slider to change the nr of plants in scene
-	public bool nonRandom = false;
-	private bool startSimulation = false;
+	public bool linearGrid = false;
 	public Button startSimButton;
-
+	public Button stopSimButton;
 
 	private Renderer rend;
 	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
@@ -23,15 +22,19 @@ public class TreeDistribution : MonoBehaviour {
 	private int nrOfRows, nrOfCols;
 	private List<GameObject> plants;
 	private TreeGrowthSimulation simulator;
+	private bool simulationRunning = false;
+
 
 	void Start () {
 		simulator = GetComponent<TreeGrowthSimulation>();
 
 		startSimButton.onClick.AddListener(StartSimulation);
 		startSimButton.gameObject.GetComponentInChildren<Text>().text = "Start Simulation";
-
+		stopSimButton.onClick.AddListener(StopSimulation);
+		stopSimButton.gameObject.GetComponentInChildren<Text>().text = "Stop Simulation";
 
 		plantSlider.onValueChanged.AddListener(delegate { OnSliderChange(); });
+		
 		plants = new List<GameObject>();
 
 		rend = GetComponent<Renderer>();
@@ -53,19 +56,37 @@ public class TreeDistribution : MonoBehaviour {
 	void StartSimulation()
 	{
 		simulator.StartSimulation(plants);
-		startSimulation = false;
+		plantSlider.interactable = false;
+		simulationRunning = true;
 	}
 
+	void StopSimulation()
+	{
+		simulator.StopSimulation();
+		plantSlider.interactable = true;
+		simulationRunning = false;
+	}
 	void Update()
 	{
+		if (!simulationRunning)
+		{
+			int newNrOfPlants = plantSlider.GetComponent<PlantsSliderScript>().Value;
+			if (newNrOfPlants != nrOfPlants)
+			{
+				DeletePlants();
+				nrOfPlants = newNrOfPlants;
+				InitDistribution();
+			}
+		}
 	}
 
 	void OnSliderChange()
 	{
-		DeletePlants();
-		nrOfPlants = (int) plantSlider.value;
-		InitDistribution();
+		//nrOfPlants = (int) plantSlider.value;
+
 	}
+
+	
 	/// <summary>
 	/// Call this if the nr of plants has changed
 	/// </summary>
@@ -95,7 +116,7 @@ public class TreeDistribution : MonoBehaviour {
 			{
 				float xPos, yPos;
 
-				if (nonRandom)
+				if (linearGrid)
 				{
 					xPos = x + dx * i;
 					yPos = y + dy * j;
