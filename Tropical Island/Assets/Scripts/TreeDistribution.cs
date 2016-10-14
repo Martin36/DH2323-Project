@@ -24,7 +24,7 @@ public class TreeDistribution : MonoBehaviour {
 	private List<GameObject> plants;
 	private TreeGrowthSimulation simulator;
 	private bool simulationRunning = false;
-	private float scaling = 2f;							//How much the radius of the trees will be scaled if randomizeRadius is active
+	private float scaling = 3f;							//How much the radius of the trees will be scaled if randomizeRadius is active
 
 	void Start () {
 		simulator = GetComponent<TreeGrowthSimulation>();
@@ -48,7 +48,7 @@ public class TreeDistribution : MonoBehaviour {
 		width = xMax - xMin;
 		height = yMax - yMin;
 
-		r = tree.GetComponent<Renderer>().bounds.extents.magnitude;    //radius is max - min coordinate
+		r = tree.GetComponent<Renderer>().bounds.extents.magnitude;
 		//Debug.Log(r);
 		InitDistribution();
 
@@ -152,7 +152,7 @@ public class TreeDistribution : MonoBehaviour {
 		{
 			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
 		}
-
+		plants[plants.Count - 1].GetComponent<PlantScript>().ChangeColor();
 	}
 	/// <summary>
 	/// 
