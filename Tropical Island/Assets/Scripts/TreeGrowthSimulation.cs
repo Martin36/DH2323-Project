@@ -28,7 +28,6 @@ public class TreeGrowthSimulation : MonoBehaviour {
 			for(int i = plants.Count-1; i >= 0; i--)
 			{
 				GameObject plant = plants[i];
-				Renderer rend = plant.GetComponent<Renderer>();
 				//Domination check is done by colliders
 				if (plant.GetComponent<PlantScript>().IsDead)
 				{

@@ -5,6 +5,7 @@ public class PlantScript : MonoBehaviour {
 
 	public enum PlantType{Tree1, Tree2};
 	public PlantType type;
+	public bool useShadeTolerance = true;
 
 	private float shadeTolerance;   //Measurement of how likely the plan is to survive in shadow	
 	private float oldAge;           //The probabillity that the plant dies when it has reached its maximum radius
@@ -14,20 +15,22 @@ public class PlantScript : MonoBehaviour {
 	private Color color;            //Color of the plant
 	private bool isDominated = false;
 	private bool isDead = false;
+	private bool useColor = true;
+	
 
 
-	void Start() {
+	void Awake() {
 		switch (type)
 		{
 			case PlantType.Tree1:
-				shadeTolerance = .5f;
-				oldAge = .1f;
+				shadeTolerance = .995f;
+				oldAge = .001f;
 				maxRadius = 50f;
 				color = Color.red;
 				break;
 			case PlantType.Tree2:
 				shadeTolerance = .7f;
-				oldAge = .7f;
+				oldAge = .0015f;
 				maxRadius = 40f;
 				color = Color.green;
 				break;
@@ -36,15 +39,18 @@ public class PlantScript : MonoBehaviour {
 		radius = GetComponent<Renderer>().bounds.extents.magnitude;
 	}
 
-	// Update is called once per frame
-	void Update() {
-
-	}
 	public void Grow()
 	{
 		if (isDominated)
 		{
-			isDead = true;
+			if (useShadeTolerance)
+			{
+				isDead = (Random.Range(0f, 1f) > shadeTolerance);
+			}
+			else
+			{
+				isDead = true;
+			}
 		}
 
 		if(radius <= maxRadius)
@@ -58,7 +64,7 @@ public class PlantScript : MonoBehaviour {
 		}
 		else
 		{
-			float randValue = Random.Range(0, 1);
+			float randValue = Random.Range(0f, 1f);
 			if(randValue < oldAge)
 			{
 				//Sad to say that the tree died of old age
@@ -70,9 +76,20 @@ public class PlantScript : MonoBehaviour {
 
 	public void ChangeColor()
 	{
-		float rgbValue = 1f - transform.GetComponent<Renderer>().bounds.extents.magnitude * (5.1f / 255f);
-		Color newColor = new Color(rgbValue, rgbValue, rgbValue);
-		GetComponent<SpriteRenderer>().color = newColor;
+
+		if (!useColor)
+		{
+			float rgbValue = 1f - transform.GetComponent<Renderer>().bounds.extents.magnitude * (5.1f / 255f);
+			Color newColor = new Color(rgbValue, rgbValue, rgbValue);
+			GetComponent<SpriteRenderer>().color = newColor;
+		}
+		else
+		{
+			float radiusDifference = radius / maxRadius;
+			Color newColor = Color.Lerp(Color.white, color, radiusDifference);
+			GetComponent<SpriteRenderer>().color = newColor;
+		}
+
 	}
 
 

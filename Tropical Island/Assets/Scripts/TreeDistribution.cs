@@ -145,6 +145,9 @@ public class TreeDistribution : MonoBehaviour {
 			float radiusAdjustment = Random.Range(-scaling * r, scaling * r);
 			Vector3 oldScale = tree.transform.localScale;
 			Vector3 newScale = new Vector3(oldScale.x + radiusAdjustment, oldScale.y + radiusAdjustment, oldScale.z);
+
+			tree.GetComponent<PlantScript>().type = (Random.Range(0f, 1f) > 0.5f) ? PlantScript.PlantType.Tree1 : PlantScript.PlantType.Tree2;
+
 			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
 			plants[plants.Count - 1].transform.localScale = newScale;
 		}
@@ -152,6 +155,7 @@ public class TreeDistribution : MonoBehaviour {
 		{
 			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
 		}
+
 		plants[plants.Count - 1].GetComponent<PlantScript>().ChangeColor();
 	}
 	/// <summary>
