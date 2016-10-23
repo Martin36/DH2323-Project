@@ -27,15 +27,16 @@ public class PlantScript : MonoBehaviour {
 				oldAge = .001f;
 				maxRadius = 50f;
 				color = Color.red;
+				growthSpeed = 20f;
 				break;
 			case PlantType.Tree2:
-				shadeTolerance = .7f;
+				shadeTolerance = .997f;
 				oldAge = .0015f;
 				maxRadius = 40f;
 				color = Color.green;
+				growthSpeed = 10f;
 				break;
 		}
-		growthSpeed = 20f;
 		radius = GetComponent<Renderer>().bounds.extents.magnitude;
 	}
 
@@ -76,22 +77,19 @@ public class PlantScript : MonoBehaviour {
 
 	public void ChangeColor()
 	{
-
+		float radiusDifference = radius / maxRadius;
 		if (!useColor)
 		{
-			float rgbValue = 1f - transform.GetComponent<Renderer>().bounds.extents.magnitude * (5.1f / 255f);
-			Color newColor = new Color(rgbValue, rgbValue, rgbValue);
+			Color newColor = Color.Lerp(Color.white, Color.black, radiusDifference);
 			GetComponent<SpriteRenderer>().color = newColor;
 		}
 		else
 		{
-			float radiusDifference = radius / maxRadius;
 			Color newColor = Color.Lerp(Color.white, color, radiusDifference);
 			GetComponent<SpriteRenderer>().color = newColor;
 		}
 
 	}
-
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
@@ -112,5 +110,15 @@ public class PlantScript : MonoBehaviour {
 	public bool IsDead
 	{
 		get { return isDead; }
+	}
+
+	public float MaxRadius
+	{
+		get { return maxRadius; }
+	}
+
+	public float Radius
+	{
+		get { return radius; }
 	}
 }

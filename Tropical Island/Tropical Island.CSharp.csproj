@@ -69,6 +69,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Generate3DScene.cs" />
+    <Compile Include="Assets\Scripts\Plant3DScript.cs" />
     <Compile Include="Assets\Scripts\PlantScript.cs" />
     <Compile Include="Assets\Scripts\PlantTextScript.cs" />
     <Compile Include="Assets\Scripts\PlantsSliderScript.cs" />
