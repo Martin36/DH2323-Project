@@ -6,17 +6,20 @@ public class PlantScript : MonoBehaviour {
 	public enum PlantType{Tree1, Tree2};
 	public PlantType type;
 	public bool useShadeTolerance = true;
+	public bool spawningEnabled = true;
 
 	private float shadeTolerance;   //Measurement of how likely the plan is to survive in shadow	
 	private float oldAge;           //The probabillity that the plant dies when it has reached its maximum radius
 	private float maxRadius;        //Maximal radius of the plant
 	private float growthSpeed;
 	private float radius;
+	private float spawnTimer = 0f;
+	private float spawnTime;
 	private Color color;            //Color of the plant
 	private bool isDominated = false;
 	private bool isDead = false;
 	private bool useColor = true;
-	
+	private bool spawnReady = false;
 
 
 	void Awake() {
@@ -24,10 +27,11 @@ public class PlantScript : MonoBehaviour {
 		{
 			case PlantType.Tree1:
 				shadeTolerance = .995f;
-				oldAge = .001f;
+				oldAge = .002f;
 				maxRadius = 50f;
 				color = Color.red;
 				growthSpeed = 20f;
+				spawnTime = 5f;
 				break;
 			case PlantType.Tree2:
 				shadeTolerance = .997f;
@@ -35,6 +39,7 @@ public class PlantScript : MonoBehaviour {
 				maxRadius = 40f;
 				color = Color.green;
 				growthSpeed = 10f;
+				spawnTime = 6f;
 				break;
 		}
 		radius = GetComponent<Renderer>().bounds.extents.magnitude;
@@ -53,7 +58,18 @@ public class PlantScript : MonoBehaviour {
 				isDead = true;
 			}
 		}
-
+		if (spawningEnabled)
+		{
+			if(spawnTimer > spawnTime && radius > 0.8*maxRadius)		//Only spawn new plants when the plant has reached half of maximum radius
+			{
+				spawnReady = true;
+				spawnTimer = 0f;
+			}
+			else
+			{
+				spawnTimer += Time.deltaTime;
+			}
+		}
 		if(radius <= maxRadius)
 		{
 			float radiusIncrease = growthSpeed * Time.deltaTime;
@@ -120,5 +136,15 @@ public class PlantScript : MonoBehaviour {
 	public float Radius
 	{
 		get { return radius; }
+	}
+
+	public bool SpawnReady
+	{
+		get { return spawnReady; }
+	}
+
+	public void Spawned()
+	{
+		spawnReady = false;
 	}
 }

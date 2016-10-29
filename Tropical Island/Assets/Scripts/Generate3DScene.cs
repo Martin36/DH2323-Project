@@ -27,7 +27,7 @@ public class Generate3DScene : MonoBehaviour {
 		{
 			DontDestroyOnLoad(plant);
 		}
-		Application.LoadLevel("3D_Generation");
+		SceneManager.LoadScene("3D_Generation");
 		SceneManager.sceneLoaded += delegate { Loaded(); } ;
 
 	}
@@ -55,7 +55,6 @@ public class Generate3DScene : MonoBehaviour {
 					plants3D.Add(Instantiate(tree2, position, Quaternion.identity) as GameObject);
 					break;
 			}
-//			DontDestroyOnLoad(plants3D[plants3D.Count - 1]);
 			Vector3 scalingVector = plants3D[plants3D.Count - 1].transform.localScale;
 			scalingVector *= scaling;
 			plants3D[plants3D.Count - 1].transform.localScale = scalingVector;
@@ -70,5 +69,4 @@ public class Generate3DScene : MonoBehaviour {
 			Destroy(plant);
 		}
 	}
-
 }

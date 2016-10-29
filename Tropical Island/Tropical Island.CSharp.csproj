@@ -75,10 +75,13 @@
     <Compile Include="Assets\Scripts\PlantTextScript.cs" />
     <Compile Include="Assets\Scripts\PlantsSliderScript.cs" />
     <Compile Include="Assets\Scripts\Screenshot.cs" />
+    <Compile Include="Assets\Scripts\TestScript.cs" />
     <Compile Include="Assets\Scripts\TreeDistribution.cs" />
     <Compile Include="Assets\Scripts\TreeGrowthSimulation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Palm Trees\Shaders\WavingDoublePassCullBackface.shader" />
+    <None Include="Assets\Palm Trees\Shaders\WavingDoublePassNoCullBackface.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
