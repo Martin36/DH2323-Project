@@ -12,9 +12,6 @@ public class TreeDistribution : MonoBehaviour {
 	public int nrOfPlants = 25;
 	public Slider plantSlider;    //Slider to change the nr of plants in scene
 	public bool linearGrid = false;
-	public Button startSimButton;
-	public Button stopSimButton;
-	public Button generate3DButton;
 	public bool randomizeRadius = false;
 
 	private Renderer rend;
@@ -29,14 +26,6 @@ public class TreeDistribution : MonoBehaviour {
 
 	void Start () {
 		simulator = GetComponent<TreeGrowthSimulation>();
-
-		startSimButton.onClick.AddListener(StartSimulation);
-		startSimButton.gameObject.GetComponentInChildren<Text>().text = "Start Simulation";
-		stopSimButton.onClick.AddListener(StopSimulation);
-		stopSimButton.gameObject.GetComponentInChildren<Text>().text = "Stop Simulation";
-		generate3DButton.onClick.AddListener(Generate3D);
-		generate3DButton.gameObject.GetComponentInChildren<Text>().text = "Generate 3D";
-		
 		plants = new List<GameObject>();
 
 		rend = GetComponent<Renderer>();
@@ -55,21 +44,21 @@ public class TreeDistribution : MonoBehaviour {
 
 	}
 
-	void StartSimulation()
+	public void StartSimulation()
 	{
 		simulator.StartSimulation(plants);
 		plantSlider.interactable = false;
 		simulationRunning = true;
 	}
 
-	void StopSimulation()
+	public void StopSimulation()
 	{
 		simulator.StopSimulation();
 		plantSlider.interactable = true;
 		simulationRunning = false;
 	}
 
-	void Generate3D()
+	public void Generate3D()
 	{
 		GameObject generator = GameObject.Find("3DGenerator");
 		generator.GetComponent<Generate3DScene>().StartGereration(plants);
