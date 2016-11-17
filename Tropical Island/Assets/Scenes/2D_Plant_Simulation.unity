@@ -892,7 +892,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c88e0f4c57c19f744ad8eed6e92879cc, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -956,6 +956,8 @@ MonoBehaviour:
   plantSlider: {fileID: 2080427707}
   linearGrid: 0
   randomizeRadius: 1
+  useTerrain: 1
+  terrain: {fileID: 0}
 --- !u!114 &1042817666
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ public class TreeDistribution : MonoBehaviour {
 	public Slider plantSlider;    //Slider to change the nr of plants in scene
 	public bool linearGrid = false;
 	public bool randomizeRadius = false;
+    public bool useTerrain = true;  //True if the tree distribution should be limited to the given terrain
+    public Terrain terrain;
 
 	private Renderer rend;
 	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
@@ -22,12 +24,20 @@ public class TreeDistribution : MonoBehaviour {
 	private List<GameObject> plants;
 	private TreeGrowthSimulation simulator;
 	private bool simulationRunning = false;
-	private float scaling = 3f;							//How much the radius of the trees will be scaled if randomizeRadius is active
+	private float scaling = 3f;				    //How much the radius of the trees will be scaled if randomizeRadius is active
+    private float minHeight, maxHeight;       //The min and max height that plants will grow on 
 
 	void Start () {
 		simulator = GetComponent<TreeGrowthSimulation>();
 		plants = new List<GameObject>();
-
+        //If there is no terrain attached there will be no restriction
+        if (useTerrain)
+        {
+            if(terrain == null)
+            {
+                useTerrain = false;
+            }
+        }
 		rend = GetComponent<Renderer>();
 		Bounds bounds = rend.bounds;
 		xMin = bounds.min.x;
@@ -37,6 +47,9 @@ public class TreeDistribution : MonoBehaviour {
 
 		width = xMax - xMin;
 		height = yMax - yMin;
+
+        minHeight = 10f;
+        maxHeight = 10f;
 
 		r = tree.GetComponent<Renderer>().bounds.extents.magnitude;
 		//Debug.Log(r);
@@ -109,15 +122,30 @@ public class TreeDistribution : MonoBehaviour {
 				{
 					xPos = x + dx * i;
 					yPos = y + dy * j;
-				}
-				else
+                    SpawnTree(xPos, yPos);
+                }
+                else if (useTerrain)
+                {
+                    xPos = x + dx * i + (dx / 2) * Random.Range(-1f, 1f) - r;       //remove r to avoid collsion
+                    yPos = y + dy * j + (dy / 2) * Random.Range(-1f, 1f) - r;
+                    Vector3 pos3d = new Vector3(xPos, 0, yPos);
+                    //float terrainHeight = terrain.SampleHeight(pos3d);'
+                    float xNorm = NormalizedXCoordinate(xPos);
+                    float yNorm = NormalizedYCoordinate(yPos);
+                    float terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
+                    if (terrainHeight > minHeight)
+                    {
+                        SpawnTree(xPos, yPos);
+                    }
+                }
+                else
 				{
 					xPos = x + dx * i + (dx / 2) * Random.Range(-1f, 1f) - r;       //remove r to avoid collsion
 					yPos = y + dy * j + (dy / 2) * Random.Range(-1f, 1f) - r;
-				}
+                    SpawnTree(xPos, yPos);
+                }
 
-				SpawnTree(xPos, yPos);
-			}
+            }
 		}
 	}
 
@@ -146,8 +174,9 @@ public class TreeDistribution : MonoBehaviour {
 
 		plants[plants.Count - 1].GetComponent<PlantScript>().ChangeColor();
 	}
+
 	/// <summary>
-	/// 
+	/// Removes all the plants in the scene
 	/// </summary>
 	void DeletePlants()
 	{
@@ -158,4 +187,24 @@ public class TreeDistribution : MonoBehaviour {
 		plants.Clear();
 
 	}
+    /// <summary>
+    /// Normalizes the x-coordinate to a value between 0 and 1
+    /// </summary>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    float NormalizedXCoordinate(float x)
+    {
+        float xNorm = (x - xMin) / Mathf.Abs(xMax - xMin);
+        return xNorm;
+    }
+    /// <summary>
+    /// Normalizes the y-coordinate to a value between 0 and 1
+    /// </summary>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    float NormalizedYCoordinate(float y)
+    {
+        float yNorm = (y - yMin) / Mathf.Abs(yMax - yMin);
+        return yNorm;
+    }
 }
