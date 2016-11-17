@@ -10,11 +10,23 @@ public class TreeGrowthSimulation : MonoBehaviour {
 	private List<GameObject> plants;
 	private bool simulationOn = false;
 	private Bounds bounds;
+    private bool useTerrain;
+    private Terrain terrain;
+    private TreeDistribution td;
+    private float minHeight, maxHeight;
 
 	public void StartSimulation(List<GameObject> plants)
 	{
 		this.plants = plants;
-		bounds = GetComponent<Renderer>().bounds;
+        td = GetComponentInParent<TreeDistribution>();
+        useTerrain = td.useTerrain;
+        if (useTerrain)
+        {
+            terrain = td.terrain;
+            minHeight = td.MinHeight;
+            maxHeight = td.MaxHeight;
+        }
+        bounds = GetComponent<Renderer>().bounds;
 		simulationOn = true;
 	}
 
@@ -84,9 +96,22 @@ public class TreeGrowthSimulation : MonoBehaviour {
 		{
 			spawnPos.y += (Mathf.Abs(2 * dy) + maxRadius);
 		}
-
-		plants.Add(Instantiate(plant, spawnPos, Quaternion.identity) as GameObject);
-		plants[plants.Count - 1].transform.localScale = new Vector3(10f, 10f);
-	}
+        if (useTerrain)
+        {
+            float xNorm = td.NormalizedXCoordinate(spawnPos.x);
+            float yNorm = td.NormalizedYCoordinate(spawnPos.y);
+            float terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
+            if(terrainHeight > minHeight && terrainHeight < maxHeight)
+            {
+                plants.Add(Instantiate(plant, spawnPos, Quaternion.identity) as GameObject);
+                plants[plants.Count - 1].transform.localScale = new Vector3(10f, 10f);
+            }
+        }
+        else
+        {
+            plants.Add(Instantiate(plant, spawnPos, Quaternion.identity) as GameObject);
+            plants[plants.Count - 1].transform.localScale = new Vector3(10f, 10f);
+        }
+    }
 
 }

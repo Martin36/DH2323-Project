@@ -9,25 +9,26 @@ using UnityEngine.UI;
 public class TreeDistribution : MonoBehaviour {
 
 	public GameObject tree;
-	public int nrOfPlants = 25;
-	public Slider plantSlider;    //Slider to change the nr of plants in scene
+    public Slider plantSlider;    //Slider to change the nr of plants in scene
+    public Terrain terrain;
+    public float minHeight = 3f;       //The min and max height that plants will grow on 
+    public float maxHeight = 40f;
+    public int nrOfPlants = 25;
 	public bool linearGrid = false;
 	public bool randomizeRadius = false;
     public bool useTerrain = true;  //True if the tree distribution should be limited to the given terrain
-    public Terrain terrain;
 
-	private Renderer rend;
-	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
+    private Renderer rend;
+    private List<GameObject> plants;
+    private TreeGrowthSimulation simulator;
+    private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
 	private float width, height;              //Width and height of the plane/grid
 	private float r;                          //Radius of the plant
-	private int nrOfRows, nrOfCols;
-	private List<GameObject> plants;
-	private TreeGrowthSimulation simulator;
+    private float scaling = 3f;                 //How much the radius of the trees will be scaled if randomizeRadius is active
+    private int nrOfRows, nrOfCols;
 	private bool simulationRunning = false;
-	private float scaling = 3f;				    //How much the radius of the trees will be scaled if randomizeRadius is active
-    private float minHeight, maxHeight;       //The min and max height that plants will grow on 
 
-	void Start () {
+    void Start () {
 		simulator = GetComponent<TreeGrowthSimulation>();
 		plants = new List<GameObject>();
         //If there is no terrain attached there will be no restriction
@@ -48,9 +49,7 @@ public class TreeDistribution : MonoBehaviour {
 		width = xMax - xMin;
 		height = yMax - yMin;
 
-        minHeight = 10f;
-        maxHeight = 10f;
-
+ 
 		r = tree.GetComponent<Renderer>().bounds.extents.magnitude;
 		//Debug.Log(r);
 		InitDistribution();
@@ -128,12 +127,11 @@ public class TreeDistribution : MonoBehaviour {
                 {
                     xPos = x + dx * i + (dx / 2) * Random.Range(-1f, 1f) - r;       //remove r to avoid collsion
                     yPos = y + dy * j + (dy / 2) * Random.Range(-1f, 1f) - r;
-                    Vector3 pos3d = new Vector3(xPos, 0, yPos);
                     //float terrainHeight = terrain.SampleHeight(pos3d);'
                     float xNorm = NormalizedXCoordinate(xPos);
                     float yNorm = NormalizedYCoordinate(yPos);
                     float terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
-                    if (terrainHeight > minHeight)
+                    if (terrainHeight > minHeight && terrainHeight < maxHeight)
                     {
                         SpawnTree(xPos, yPos);
                     }
@@ -192,7 +190,7 @@ public class TreeDistribution : MonoBehaviour {
     /// </summary>
     /// <param name="x"></param>
     /// <returns></returns>
-    float NormalizedXCoordinate(float x)
+    public float NormalizedXCoordinate(float x)
     {
         float xNorm = (x - xMin) / Mathf.Abs(xMax - xMin);
         return xNorm;
@@ -202,9 +200,19 @@ public class TreeDistribution : MonoBehaviour {
     /// </summary>
     /// <param name="y"></param>
     /// <returns></returns>
-    float NormalizedYCoordinate(float y)
+    public float NormalizedYCoordinate(float y)
     {
         float yNorm = (y - yMin) / Mathf.Abs(yMax - yMin);
         return yNorm;
+    }
+
+    public float MaxHeight
+    {
+        get { return maxHeight; }
+    }
+
+    public float MinHeight
+    {
+        get { return minHeight; }
     }
 }

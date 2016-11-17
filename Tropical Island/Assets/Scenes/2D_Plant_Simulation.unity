@@ -892,7 +892,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: c88e0f4c57c19f744ad8eed6e92879cc, type: 2}
+  - {fileID: 2100000, guid: 488c5d273fe895d43a6465e33bba3233, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -952,12 +952,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 1000010413542374, guid: 46c7af59bf7ef76429670c5b9058f43b, type: 2}
-  nrOfPlants: 50
   plantSlider: {fileID: 2080427707}
+  terrain: {fileID: 21880872, guid: e23d6dc3ef804504694d7bf5f1bb0fcc, type: 2}
+  minHeight: 0
+  maxHeight: 0
+  nrOfPlants: 50
   linearGrid: 0
   randomizeRadius: 1
   useTerrain: 1
-  terrain: {fileID: 0}
 --- !u!114 &1042817666
 MonoBehaviour:
   m_ObjectHideFlags: 0
