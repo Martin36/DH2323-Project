@@ -42,7 +42,10 @@ public class Generate3DScene : MonoBehaviour {
         }
         if (useTerrain)
         {
-            SceneManager.LoadScene("Snowy_Mountain");
+            if(terrain.gameObject.tag.Equals("Island"))
+                SceneManager.LoadScene("Snowy_Mountain");
+            if(terrain.gameObject.tag.Equals("Mountain"))
+                SceneManager.LoadScene("Terrain_Test");
         }
         else
         {

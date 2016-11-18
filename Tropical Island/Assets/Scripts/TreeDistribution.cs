@@ -19,6 +19,7 @@ public class TreeDistribution : MonoBehaviour {
     public bool useTerrain = true;  //True if the tree distribution should be limited to the given terrain
 
     private Renderer rend;
+    private Button startSimButton, stopSimButton, generate3DButton;
     private List<GameObject> plants;
     private TreeGrowthSimulation simulator;
     private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
@@ -30,7 +31,11 @@ public class TreeDistribution : MonoBehaviour {
 
     void Start () {
 		simulator = GetComponent<TreeGrowthSimulation>();
-		plants = new List<GameObject>();
+        startSimButton = GameObject.Find("StartSimulationButton").GetComponent<Button>();
+        stopSimButton = GameObject.Find("StopSimulationButton").GetComponent<Button>();
+        generate3DButton = GameObject.Find("3DGenerationButton").GetComponent<Button>();
+
+        plants = new List<GameObject>();
         //If there is no terrain attached there will be no restriction
         if (useTerrain)
         {
@@ -61,6 +66,9 @@ public class TreeDistribution : MonoBehaviour {
 		simulator.StartSimulation(plants);
 		plantSlider.interactable = false;
 		simulationRunning = true;
+        startSimButton.interactable = false;
+        stopSimButton.interactable = true;
+        generate3DButton.interactable = false;
 	}
 
 	public void StopSimulation()
@@ -68,6 +76,9 @@ public class TreeDistribution : MonoBehaviour {
 		simulator.StopSimulation();
 		plantSlider.interactable = true;
 		simulationRunning = false;
+        startSimButton.interactable = true;
+        stopSimButton.interactable = false;
+        generate3DButton.interactable = true;
 	}
 
 	public void Generate3D()
