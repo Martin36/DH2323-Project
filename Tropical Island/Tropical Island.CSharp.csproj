@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\PlantTextScript.cs" />
     <Compile Include="Assets\Scripts\PlantsSliderScript.cs" />
     <Compile Include="Assets\Scripts\Screenshot.cs" />
+    <Compile Include="Assets\Scripts\TerrainScript.cs" />
     <Compile Include="Assets\Scripts\TestScript.cs" />
     <Compile Include="Assets\Scripts\TreeDistribution.cs" />
     <Compile Include="Assets\Scripts\TreeGrowthSimulation.cs" />

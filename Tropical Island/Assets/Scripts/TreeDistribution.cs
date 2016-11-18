@@ -133,7 +133,7 @@ public class TreeDistribution : MonoBehaviour {
                     float terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
                     if (terrainHeight > minHeight && terrainHeight < maxHeight)
                     {
-                        SpawnTree(xPos, yPos);
+                        SpawnTree(xPos, yPos, terrainHeight);
                     }
                 }
                 else
@@ -145,38 +145,100 @@ public class TreeDistribution : MonoBehaviour {
 
             }
 		}
-	}
+        //SpawnCorners();
+    }
 
-	/// <summary>
-	/// Creates the tree at the specified position
-	/// </summary>
-	/// <param name="x">x-coordinate</param>
-	/// <param name="y">y-coordinate</param>
-	void SpawnTree(float x, float y)
-	{
-		if (randomizeRadius)
-		{
-			float radiusAdjustment = Random.Range(-scaling * r, scaling * r);
-			Vector3 oldScale = tree.transform.localScale;
-			Vector3 newScale = new Vector3(oldScale.x + radiusAdjustment, oldScale.y + radiusAdjustment, oldScale.z);
+    void SpawnCorners()
+    {
+        float xPos, yPos, xNorm, yNorm, terrainHeight;
+        //Top left corner
+        xPos = xMin;
+        yPos = yMin;    
+        xNorm = NormalizedXCoordinate(xPos);
+        yNorm = NormalizedYCoordinate(yPos);
+        terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
+        SpawnTree(xPos, yPos, terrainHeight);
+        //Top right corner
+        xPos = xMax;
+        yPos = yMin;
+        xNorm = NormalizedXCoordinate(xPos);
+        yNorm = NormalizedYCoordinate(yPos);
+        terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
+        SpawnTree(xPos, yPos, terrainHeight);
+        //Bottom right corner
+        xPos = xMax;
+        yPos = yMax;
+        xNorm = NormalizedXCoordinate(xPos);
+        yNorm = NormalizedYCoordinate(yPos);
+        terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
+        SpawnTree(xPos, yPos, terrainHeight);
+        //Bottom left corner
+        xPos = xMin;
+        yPos = yMax;
+        xNorm = NormalizedXCoordinate(xPos);
+        yNorm = NormalizedYCoordinate(yPos);
+        terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
+        SpawnTree(xPos, yPos, terrainHeight);
 
-			tree.GetComponent<PlantScript>().type = (Random.Range(0f, 1f) > 0.5f) ? PlantScript.PlantType.Tree1 : PlantScript.PlantType.Tree2;
+    }
+    /// <summary>
+    /// Creates the tree at the specified position
+    /// </summary>
+    /// <param name="x">x-coordinate</param>
+    /// <param name="y">y-coordinate</param>
+    void SpawnTree(float x, float y)
+    {
+        if (randomizeRadius)
+        {
+            float radiusAdjustment = Random.Range(-scaling * r, scaling * r);
+            Vector3 oldScale = tree.transform.localScale;
+            Vector3 newScale = new Vector3(oldScale.x + radiusAdjustment, oldScale.y + radiusAdjustment, oldScale.z);
 
-			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
-			plants[plants.Count - 1].transform.localScale = newScale;
-		}
-		else
-		{
-			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
-		}
+            tree.GetComponent<PlantScript>().type = (Random.Range(0f, 1f) > 0.5f) ? PlantScript.PlantType.Tree1 : PlantScript.PlantType.Tree2;
 
-		plants[plants.Count - 1].GetComponent<PlantScript>().ChangeColor();
-	}
+            plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+            plants[plants.Count - 1].transform.localScale = newScale;
+        }
+        else
+        {
+            plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+        }
 
-	/// <summary>
-	/// Removes all the plants in the scene
-	/// </summary>
-	void DeletePlants()
+        plants[plants.Count - 1].GetComponent<PlantScript>().ChangeColor();
+    }
+    /// <summary>
+    /// Creates the tree at the specified position with the height parameter for 3D generation on terrain
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="height"></param>
+    void SpawnTree(float x, float y, float height)
+    {
+        if (randomizeRadius)
+        {
+            float radiusAdjustment = Random.Range(-scaling * r, scaling * r);
+            Vector3 oldScale = tree.transform.localScale;
+            Vector3 newScale = new Vector3(oldScale.x + radiusAdjustment, oldScale.y + radiusAdjustment, oldScale.z);
+
+            tree.GetComponent<PlantScript>().type = (Random.Range(0f, 1f) > 0.5f) ? PlantScript.PlantType.Tree1 : PlantScript.PlantType.Tree2;
+
+            plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+            plants[plants.Count - 1].transform.localScale = newScale;
+        }
+        else
+        {
+            plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+        }
+
+        plants[plants.Count - 1].GetComponent<PlantScript>().ChangeColor();
+        plants[plants.Count - 1].GetComponent<PlantScript>().spawnHeight = height;
+
+    }
+
+    /// <summary>
+    /// Removes all the plants in the scene
+    /// </summary>
+    void DeletePlants()
 	{
 		foreach(GameObject plant in plants)
 		{

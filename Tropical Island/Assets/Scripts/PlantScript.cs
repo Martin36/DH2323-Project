@@ -7,6 +7,7 @@ public class PlantScript : MonoBehaviour {
 	public PlantType type;
 	public bool useShadeTolerance = true;
 	public bool spawningEnabled = true;
+    [HideInInspector] public float spawnHeight = 0f;
 
 	private float shadeTolerance;   //Measurement of how likely the plan is to survive in shadow	
 	private float oldAge;           //The probabillity that the plant dies when it has reached its maximum radius
