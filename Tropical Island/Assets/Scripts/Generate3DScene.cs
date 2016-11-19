@@ -11,9 +11,9 @@ public class Generate3DScene : MonoBehaviour {
 
 	public GameObject tree1;
 	public GameObject tree2;
-    public Terrain terrain;
 
-	private List<GameObject> plants3D;
+    private Terrain terrain;
+    private List<GameObject> plants3D;
 	private List<GameObject> plants2D;
     private bool useTerrain;
     private float xSizeTerrain, ySizeTerrian, xSize2D, ySize2D;
@@ -25,9 +25,10 @@ public class Generate3DScene : MonoBehaviour {
 
 	public void StartGereration(List<GameObject> plants)
 	{
+        GameObject background = GameObject.FindGameObjectWithTag("GameController");
+        terrain = background.GetComponent<TreeDistribution>().terrain;
         xSizeTerrain = terrain.terrainData.size.x;
         ySizeTerrian = terrain.terrainData.size.z;
-        GameObject background = GameObject.FindGameObjectWithTag("GameController");
         xSize2D = background.GetComponent<Renderer>().bounds.size.x;
         ySize2D = background.GetComponent<Renderer>().bounds.size.y;
 

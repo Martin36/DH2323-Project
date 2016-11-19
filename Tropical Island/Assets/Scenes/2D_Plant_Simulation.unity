@@ -846,7 +846,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tree1: {fileID: 100000, guid: ba9aafa13852604458ff8905946cbc86, type: 2}
   tree2: {fileID: 100000, guid: 37699440dbf4a9445b116aedcd35735e, type: 2}
-  terrain: {fileID: 218000011335776098, guid: ea8e00171e0b6ad4a8a4e02d821f576e, type: 2}
 --- !u!4 &880046374
 Transform:
   m_ObjectHideFlags: 0
@@ -1491,7 +1490,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1374182735}
   m_Direction: 0
   m_MinValue: 1
-  m_MaxValue: 100
+  m_MaxValue: 200
   m_WholeNumbers: 1
   m_Value: 50
   m_OnValueChanged:

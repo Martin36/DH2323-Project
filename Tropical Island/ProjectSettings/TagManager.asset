@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Island
   - Mountain
+  - PlantsTextField
   layers:
   - Default
   - TransparentFX
