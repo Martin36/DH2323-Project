@@ -7,12 +7,14 @@ public class CreateDropdowns : MonoBehaviour {
     public GameObject plantSelector;
 
     private InputField plantsNrField;
+    private CreateDistribution cd;
     private GameObject[] plantLists;
     private int dropdownNr;     //Number of dropdown lists to spawn (equals the nr of plants the user wants to use)
 
     void Awake()
     {
         plantsNrField = GetComponentInChildren<InputField>();
+        cd = GetComponent<CreateDistribution>();
     }
 
     public void OnFinished()
@@ -35,5 +37,11 @@ public class CreateDropdowns : MonoBehaviour {
             plantLists[i].transform.localPosition = new Vector3(xPos, yPos);
             yPos -= 50f;
         }
+        cd.InitDropdowns();      //Notify that the values of the dropdowns has been changed
+    }
+
+    public GameObject[] PlantLists
+    {
+        get { return plantLists; }
     }
 }
