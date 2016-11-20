@@ -23,6 +23,7 @@ public class TreeDistribution : MonoBehaviour
 	private Button startSimButton, stopSimButton, generate3DButton;
 	private List<GameObject> plants;
 	private TreeGrowthSimulation simulator;
+	private GameObject[] plants3D;
 	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
 	private float width, height;              //Width and height of the plane/grid
 	private float r;                          //Radius of the plant
@@ -36,7 +37,7 @@ public class TreeDistribution : MonoBehaviour
 		startSimButton = GameObject.Find("StartSimulationButton").GetComponent<Button>();
 		stopSimButton = GameObject.Find("StopSimulationButton").GetComponent<Button>();
 		generate3DButton = GameObject.Find("3DGenerationButton").GetComponent<Button>();
-
+		plants3D = GameObject.Find("PlantHolder").GetComponent<PlantHolder>().selectedPlants;
 		plants = new List<GameObject>();
 		//If there is no terrain attached there will be no restriction
 		if (useTerrain)
@@ -233,7 +234,30 @@ public class TreeDistribution : MonoBehaviour
 			Vector3 oldScale = tree.transform.localScale;
 			Vector3 newScale = new Vector3(oldScale.x + radiusAdjustment, oldScale.y + radiusAdjustment, oldScale.z);
 
-			tree.GetComponent<PlantScript>().type = (Random.Range(0f, 1f) > 0.5f) ? PlantScript.PlantType.Tree1 : PlantScript.PlantType.Tree2;
+			//tree.GetComponent<PlantScript>().type = (Random.Range(0f, 1f) > 0.5f) ? PlantScript.PlantType.Tree1 : PlantScript.PlantType.Tree2;
+			//Assign a random plant from the list of plants specified by the user
+			int plantNr = Random.Range(0, plants3D.Length);
+			string type = plants3D[plantNr].tag;
+			PlantScript.PlantType plantType = PlantScript.PlantType.Tree1;
+			switch (type)
+			{
+				case "Palm_DualBended":
+					plantType = PlantScript.PlantType.PalmDualBended;
+					break;
+				case "Palm_Dual":
+					plantType = PlantScript.PlantType.PalmDual;
+					break;
+				case "Palm_SingleBended":
+					plantType = PlantScript.PlantType.PalmSingleBended;
+					break;
+				case "Palm_Single":
+					plantType = PlantScript.PlantType.PalmSingle;
+					break;
+				case "Palm_Trio":
+					plantType = PlantScript.PlantType.PalmTrio;
+					break;
+			}
+			tree.GetComponent<PlantScript>().type = plantType;
 
 			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
 			plants[plants.Count - 1].transform.localScale = newScale;

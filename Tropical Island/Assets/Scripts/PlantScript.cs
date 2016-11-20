@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlantScript : MonoBehaviour {
 
-	public enum PlantType{Tree1, Tree2};
+	public enum PlantType{Tree1, Tree2, PalmDualBended, PalmDual, PalmSingleBended, PalmSingle, PalmTrio};
 	public PlantType type;
 	public bool useShadeTolerance = true;
 	public bool spawningEnabled = true;
@@ -39,6 +39,46 @@ public class PlantScript : MonoBehaviour {
 				oldAge = .0015f;
 				maxRadius = 40f;
 				color = Color.green;
+				growthSpeed = 10f;
+				spawnTime = 6f;
+				break;
+			case PlantType.PalmDual:
+				shadeTolerance = .997f;
+				oldAge = .0015f;
+				maxRadius = 40f;
+				color = Color.blue;
+				growthSpeed = 10f;
+				spawnTime = 6f;
+				break;
+			case PlantType.PalmDualBended:
+				shadeTolerance = .997f;
+				oldAge = .0015f;
+				maxRadius = 40f;
+				color = Color.green;
+				growthSpeed = 10f;
+				spawnTime = 6f;
+				break;
+			case PlantType.PalmSingle:
+				shadeTolerance = .997f;
+				oldAge = .0015f;
+				maxRadius = 40f;
+				color = Color.magenta;
+				growthSpeed = 10f;
+				spawnTime = 6f;
+				break;
+			case PlantType.PalmSingleBended:
+				shadeTolerance = .997f;
+				oldAge = .0015f;
+				maxRadius = 40f;
+				color = Color.red;
+				growthSpeed = 10f;
+				spawnTime = 6f;
+				break;
+			case PlantType.PalmTrio:
+				shadeTolerance = .997f;
+				oldAge = .0015f;
+				maxRadius = 40f;
+				color = Color.yellow;
 				growthSpeed = 10f;
 				spawnTime = 6f;
 				break;

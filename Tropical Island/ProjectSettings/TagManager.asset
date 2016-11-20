@@ -7,6 +7,11 @@ TagManager:
   - Island
   - Mountain
   - PlantsTextField
+  - Palm_DualBended
+  - Palm_Dual
+  - Palm_SingleBended
+  - Palm_Single
+  - Palm_Trio
   layers:
   - Default
   - TransparentFX

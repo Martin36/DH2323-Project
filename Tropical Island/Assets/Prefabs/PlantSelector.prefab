@@ -447,11 +447,15 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Palm Tree 1
+    - m_Text: Palm Dual Bended
       m_Image: {fileID: 0}
-    - m_Text: Palm Tree 2
+    - m_Text: Palm Dual
       m_Image: {fileID: 0}
-    - m_Text: Option C
+    - m_Text: Palm Single Bended
+      m_Image: {fileID: 0}
+    - m_Text: Palm Single
+      m_Image: {fileID: 0}
+    - m_Text: Palm Trio
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -701,7 +705,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Palm Tree 1
+  m_Text: Plant Dual Bended
 --- !u!222 &222000010642166334
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -801,7 +805,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 300, y: 300}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 170, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000011108184658
 RectTransform:

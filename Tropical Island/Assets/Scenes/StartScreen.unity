@@ -1376,11 +1376,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b84c461a40e5aa44a612f15285e7252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plant1: {fileID: 100000, guid: ba9aafa13852604458ff8905946cbc86, type: 2}
-  plant2: {fileID: 100000, guid: 37699440dbf4a9445b116aedcd35735e, type: 2}
-  plant3: {fileID: 0}
-  plant4: {fileID: 0}
-  plant5: {fileID: 0}
+  plant1: {fileID: 100000, guid: c66a802dcad3d5247b1221b3b27452be, type: 2}
+  plant2: {fileID: 100000, guid: ba9aafa13852604458ff8905946cbc86, type: 2}
+  plant3: {fileID: 100000, guid: f42f1308c05e28447b1e3a97e30744c3, type: 2}
+  plant4: {fileID: 100000, guid: 37699440dbf4a9445b116aedcd35735e, type: 2}
+  plant5: {fileID: 100000, guid: 278c4cc2ec96ec347be7eaf5367238fd, type: 2}
   selectedPlants: []
 --- !u!4 &1278903462
 Transform:
