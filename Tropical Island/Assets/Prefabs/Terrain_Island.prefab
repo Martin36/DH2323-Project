@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 418718}
   - 218: {fileID: 21880872}
   - 154: {fileID: 15451522}
+  - 114: {fileID: 114000011788276864}
   m_Layer: 0
   m_Name: Terrain_Island
   m_TagString: Island
@@ -82,3 +83,14 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 126098}
   m_IsPrefabParent: 1
+--- !u!114 &114000011788276864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 126098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3714d7d9f4f566d4fa61437ff2d0ec8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -11,9 +11,6 @@ public class TreeDistribution : MonoBehaviour
 
 	public GameObject tree;
 	public Slider plantSlider;    //Slider to change the nr of plants in scene
-	public Terrain terrain;
-	public float minHeight = 3f;       //The min and max height that plants will grow on 
-	public float maxHeight = 40f;
 	public int nrOfPlants = 25;
 	public bool linearGrid = false;
 	public bool randomizeRadius = false;
@@ -24,21 +21,27 @@ public class TreeDistribution : MonoBehaviour
 	private List<GameObject> plants;
 	private TreeGrowthSimulation simulator;
 	private GameObject[] plants3D;
+	private Terrain terrain;
 	private float xMin, xMax, yMin, yMax;     //The corner points on where the plants will be distributed
 	private float width, height;              //Width and height of the plane/grid
 	private float r;                          //Radius of the plant
 	private float scaling = 3f;                 //How much the radius of the trees will be scaled if randomizeRadius is active
+	private float minHeight;       //The min and max height that plants will grow on 
+	private float maxHeight;
 	private int nrOfRows, nrOfCols;
 	private bool simulationRunning = false;
 
 	void Start()
 	{
+		//Get all the components (Awake?)
 		simulator = GetComponent<TreeGrowthSimulation>();
 		startSimButton = GameObject.Find("StartSimulationButton").GetComponent<Button>();
 		stopSimButton = GameObject.Find("StopSimulationButton").GetComponent<Button>();
 		generate3DButton = GameObject.Find("3DGenerationButton").GetComponent<Button>();
 		plants3D = GameObject.Find("PlantHolder").GetComponent<PlantHolder>().selectedPlants;
+		terrain = GameObject.Find("PlantHolder").GetComponent<PlantHolder>().selectedTerrain.GetComponent<Terrain>();
 		plants = new List<GameObject>();
+
 		//If there is no terrain attached there will be no restriction
 		if (useTerrain)
 		{
@@ -47,19 +50,35 @@ public class TreeDistribution : MonoBehaviour
 				useTerrain = false;
 			}
 		}
+		//Set the bounds
 		rend = GetComponent<Renderer>();
 		Bounds bounds = rend.bounds;
 		xMin = bounds.min.x;
 		xMax = bounds.max.x;
 		yMin = bounds.min.y;
 		yMax = bounds.max.y;
-
 		width = xMax - xMin;
 		height = yMax - yMin;
 
+		//Set the max and min height depending on which terrain is used
+		if(terrain.gameObject.tag == "Island")
+		{
+			minHeight = 5;
+			maxHeight = 60;
+		}
+		else if(terrain.gameObject.tag == "Mountain")
+		{
+			minHeight = -1;
+			maxHeight = 40;
+		}
+		else
+		{
+			minHeight = 0;
+			maxHeight = 100;
+		}
 
+		//Set the radius
 		r = tree.GetComponent<Renderer>().bounds.extents.magnitude;
-		//Debug.Log(r);
 		InitDistribution();
 
 	}
@@ -313,5 +332,10 @@ public class TreeDistribution : MonoBehaviour
 	public float MinHeight
 	{
 		get { return minHeight; }
+	}
+
+	public Terrain SelectedTerrain
+	{
+		get { return terrain; }
 	}
 }

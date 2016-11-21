@@ -20,12 +20,13 @@ public class CreateDistribution : MonoBehaviour
 	{
 		cd = GetComponent<CreateDropdowns>();
 		ph = GameObject.Find("PlantHolder").GetComponent<PlantHolder>();
+		terrain = ph.terrain1;
 		createDistButton = GetComponentInChildren<Button>();
 	}
 
 	public void StartCreateDistribution()
 	{
-		ph.SaveData(plants);
+		ph.SaveData(plants, terrain);
 		SceneManager.LoadScene("2D_Plant_Simulation");
 	}
 	public void InitDropdowns()
@@ -100,6 +101,20 @@ public class CreateDistribution : MonoBehaviour
 				plants[indx] = ph.plant5;
 				break;
 		}
-		
 	}
+
+	public void ChangeTerrain(Dropdown target)
+	{
+		int value = target.value;
+		switch (value)
+		{
+			case 0:
+				terrain = ph.terrain1;
+				break;
+			case 1:
+				terrain = ph.terrain2;
+				break;
+		}
+	}
+
 }

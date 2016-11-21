@@ -12,6 +12,7 @@ TagManager:
   - Palm_SingleBended
   - Palm_Single
   - Palm_Trio
+  - PlantHolder
   layers:
   - Default
   - TransparentFX
