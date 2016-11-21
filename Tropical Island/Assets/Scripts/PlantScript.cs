@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
 
-public class PlantScript : MonoBehaviour {
 
-	public enum PlantType{Tree1, Tree2, PalmDualBended, PalmDual, PalmSingleBended, PalmSingle, PalmTrio};
+public class PlantScript : MonoBehaviour
+{
+
+	public enum PlantType { Tree1, Tree2, PalmDualBended, PalmDual, PalmSingleBended, PalmSingle, PalmTrio };
 	public PlantType type;
 	public bool useShadeTolerance = true;
 	public bool spawningEnabled = true;
-    [HideInInspector] public float spawnHeight = 0f;
+	[HideInInspector]
+	public float spawnHeight = 0f;
 
+	private Color color;            //Color of the plant
+	private PlantHolder ph;
 	private float shadeTolerance;   //Measurement of how likely the plan is to survive in shadow	
 	private float oldAge;           //The probabillity that the plant dies when it has reached its maximum radius
 	private float maxRadius;        //Maximal radius of the plant
@@ -16,14 +21,18 @@ public class PlantScript : MonoBehaviour {
 	private float radius;
 	private float spawnTimer = 0f;
 	private float spawnTime;
-	private Color color;            //Color of the plant
 	private bool isDominated = false;
 	private bool isDead = false;
 	private bool useColor = true;
 	private bool spawnReady = false;
 
-
-	void Awake() {
+	void Awake()
+	{
+		/*
+		ph = GameObject.FindGameObjectWithTag("PlantHolder").GetComponent<PlantHolder>();
+		GameObject[] trees = ph.selectedPlants;
+		GameObject currentTree;
+		*/
 		switch (type)
 		{
 			case PlantType.Tree1:
@@ -45,7 +54,7 @@ public class PlantScript : MonoBehaviour {
 			case PlantType.PalmDual:
 				shadeTolerance = .997f;
 				oldAge = .0015f;
-				maxRadius = 40f;
+				maxRadius = 60f;
 				color = Color.blue;
 				growthSpeed = 10f;
 				spawnTime = 6f;
@@ -53,7 +62,7 @@ public class PlantScript : MonoBehaviour {
 			case PlantType.PalmDualBended:
 				shadeTolerance = .997f;
 				oldAge = .0015f;
-				maxRadius = 40f;
+				maxRadius = 80f;
 				color = Color.green;
 				growthSpeed = 10f;
 				spawnTime = 6f;
@@ -69,7 +78,7 @@ public class PlantScript : MonoBehaviour {
 			case PlantType.PalmSingleBended:
 				shadeTolerance = .997f;
 				oldAge = .0015f;
-				maxRadius = 40f;
+				maxRadius = 50f;
 				color = Color.red;
 				growthSpeed = 10f;
 				spawnTime = 6f;
@@ -77,7 +86,7 @@ public class PlantScript : MonoBehaviour {
 			case PlantType.PalmTrio:
 				shadeTolerance = .997f;
 				oldAge = .0015f;
-				maxRadius = 40f;
+				maxRadius = 90f;
 				color = Color.yellow;
 				growthSpeed = 10f;
 				spawnTime = 6f;
@@ -101,7 +110,7 @@ public class PlantScript : MonoBehaviour {
 		}
 		if (spawningEnabled)
 		{
-			if(spawnTimer > spawnTime && radius > 0.8*maxRadius)		//Only spawn new plants when the plant has reached half of maximum radius
+			if (spawnTimer > spawnTime && radius > 0.8 * maxRadius)   //Only spawn new plants when the plant has reached half of maximum radius
 			{
 				spawnReady = true;
 				spawnTimer = 0f;
@@ -111,7 +120,7 @@ public class PlantScript : MonoBehaviour {
 				spawnTimer += Time.deltaTime;
 			}
 		}
-		if(radius <= maxRadius)
+		if (radius <= maxRadius)
 		{
 			float radiusIncrease = growthSpeed * Time.deltaTime;
 			Vector3 oldLocalScale = transform.localScale;
@@ -123,7 +132,7 @@ public class PlantScript : MonoBehaviour {
 		else
 		{
 			float randValue = Random.Range(0f, 1f);
-			if(randValue < oldAge)
+			if (randValue < oldAge)
 			{
 				//Sad to say that the tree died of old age
 				isDead = true;
@@ -151,7 +160,7 @@ public class PlantScript : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		//check which of the objects is the largest
-		float radius = GetComponent<Renderer>().bounds.extents.magnitude; 
+		float radius = GetComponent<Renderer>().bounds.extents.magnitude;
 		float otherRadius = other.transform.GetComponent<Renderer>().bounds.extents.magnitude;
 		if (radius <= otherRadius)
 		{

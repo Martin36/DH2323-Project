@@ -66,6 +66,8 @@ public class Generate3DScene : MonoBehaviour
 			maxRadius = script.MaxRadius;
 			radius = script.Radius;
 			scaling = radius / maxRadius;
+			if (scaling < .2f)		//Skip adding the trees that are too small
+				continue;
 			Vector3 position;
 			float height;
 			GameObject plantObject;
