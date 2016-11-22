@@ -19,6 +19,7 @@ public class Generate3DScene : MonoBehaviour
 	private List<GameObject> plants2D;
 	private bool useTerrain;
 	private bool useRotation = false;
+	private bool useRandomYRotation = true;
 	private float xSizeTerrain, ySizeTerrian, xSize2D, ySize2D;
 
 	void Awake()
@@ -31,6 +32,7 @@ public class Generate3DScene : MonoBehaviour
 		PlantHolder ph = GameObject.FindGameObjectWithTag("PlantHolder").GetComponent<PlantHolder>();
 		terrain = ph.selectedTerrain.GetComponent<Terrain>();
 		trees = ph.selectedPlants;
+		useRotation = ph.useRotation;
 	}
 
 	public void StartGereration(List<GameObject> plants)
@@ -72,48 +74,59 @@ public class Generate3DScene : MonoBehaviour
 			Vector3 position;
 			float height;
 			GameObject plantObject;
+			Quaternion rotation;
+
+			if (useRandomYRotation)
+			{
+				rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+			}
+			else
+			{
+				rotation = Quaternion.identity;
+			}
+
 			switch (script.type)
 			{
 				case PlantScript.PlantType.Tree1:
 					height = plant.GetComponent<PlantScript>().spawnHeight;
 					//position = new Vector3(plant.transform.position.x, height, plant.transform.position.y);
 					position = ConvertToTerrainCoordinates(plant.transform.position.x, plant.transform.position.y, height);
-					plants3D.Add(Instantiate(tree1, position, Quaternion.identity) as GameObject);
+					plants3D.Add(Instantiate(tree1, position, rotation) as GameObject);
 					break;
 				case PlantScript.PlantType.Tree2:
 					height = plant.GetComponent<PlantScript>().spawnHeight;
 					position = ConvertToTerrainCoordinates(plant.transform.position.x, plant.transform.position.y, height);
-					plants3D.Add(Instantiate(tree2, position, Quaternion.identity) as GameObject);
+					plants3D.Add(Instantiate(tree2, position, rotation) as GameObject);
 					break;
 				case PlantScript.PlantType.PalmDual:
 					height = plant.GetComponent<PlantScript>().spawnHeight;
 					position = ConvertToTerrainCoordinates(plant.transform.position.x, plant.transform.position.y, height);
 					plantObject = trees.Where(obj => obj.tag == "Palm_Dual").SingleOrDefault();		//Finds the object in the list with the specified tag
-					plants3D.Add(Instantiate(plantObject, position, Quaternion.identity) as GameObject);
+					plants3D.Add(Instantiate(plantObject, position, rotation) as GameObject);
 					break;
 				case PlantScript.PlantType.PalmDualBended:
 					height = plant.GetComponent<PlantScript>().spawnHeight;
 					position = ConvertToTerrainCoordinates(plant.transform.position.x, plant.transform.position.y, height);
 					plantObject = trees.Where(obj => obj.tag == "Palm_DualBended").SingleOrDefault();   
-					plants3D.Add(Instantiate(plantObject, position, Quaternion.identity) as GameObject);
+					plants3D.Add(Instantiate(plantObject, position, rotation) as GameObject);
 					break;
 				case PlantScript.PlantType.PalmSingle:
 					height = plant.GetComponent<PlantScript>().spawnHeight;
 					position = ConvertToTerrainCoordinates(plant.transform.position.x, plant.transform.position.y, height);
 					plantObject = trees.Where(obj => obj.tag == "Palm_Single").SingleOrDefault();
-					plants3D.Add(Instantiate(plantObject, position, Quaternion.identity) as GameObject);
+					plants3D.Add(Instantiate(plantObject, position, rotation) as GameObject);
 					break;
 				case PlantScript.PlantType.PalmSingleBended:
 					height = plant.GetComponent<PlantScript>().spawnHeight;
 					position = ConvertToTerrainCoordinates(plant.transform.position.x, plant.transform.position.y, height);
 					plantObject = trees.Where(obj => obj.tag == "Palm_SingleBended").SingleOrDefault();
-					plants3D.Add(Instantiate(plantObject, position, Quaternion.identity) as GameObject);
+					plants3D.Add(Instantiate(plantObject, position, rotation) as GameObject);
 					break;
 				case PlantScript.PlantType.PalmTrio:
 					height = plant.GetComponent<PlantScript>().spawnHeight;
 					position = ConvertToTerrainCoordinates(plant.transform.position.x, plant.transform.position.y, height);
 					plantObject = trees.Where(obj => obj.tag == "Palm_Trio").SingleOrDefault();
-					plants3D.Add(Instantiate(plantObject, position, Quaternion.identity) as GameObject);
+					plants3D.Add(Instantiate(plantObject, position, rotation) as GameObject);
 					break;
 			}
 			Vector3 scalingVector = plants3D[plants3D.Count - 1].transform.localScale;
@@ -123,6 +136,8 @@ public class Generate3DScene : MonoBehaviour
 			if (useRotation)
 			{
 				Vector3 normal = plant.GetComponent<PlantScript>().spawnNormal;
+			//rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+
 				/*
 				Quaternion facing = plants3D[plants3D.Count - 1].transform.rotation;
 				Quaternion rotation = Quaternion.LookRotation(normal);

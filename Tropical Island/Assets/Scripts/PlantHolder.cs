@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 /// <summary>
 /// Script for holding the plants
 /// </summary>
@@ -13,8 +12,12 @@ public class PlantHolder : MonoBehaviour
 	public GameObject plant5;
 	public GameObject terrain1;
 	public GameObject terrain2;
+	[HideInInspector]
 	public GameObject[] selectedPlants;
+	[HideInInspector]
 	public GameObject selectedTerrain;
+	[HideInInspector]
+	public bool useRotation;
 
 	void Awake()
 	{
@@ -26,5 +29,10 @@ public class PlantHolder : MonoBehaviour
 		selectedPlants = plants.Clone() as GameObject[];
 		selectedTerrain = terrain;
 		DontDestroyOnLoad(selectedTerrain);
+	}
+
+	public void Rotation(bool on)
+	{
+		useRotation = on;
 	}
 }
