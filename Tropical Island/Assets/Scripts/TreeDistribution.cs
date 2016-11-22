@@ -164,9 +164,10 @@ public class TreeDistribution : MonoBehaviour
 					float xNorm = NormalizedXCoordinate(xPos);
 					float yNorm = NormalizedYCoordinate(yPos);
 					float terrainHeight = terrain.terrainData.GetInterpolatedHeight(xNorm, yNorm);
+					Vector3 terrainNormal = terrain.terrainData.GetInterpolatedNormal(xNorm, yNorm);
 					if (terrainHeight > minHeight && terrainHeight < maxHeight)
 					{
-						SpawnTree(xPos, yPos, terrainHeight);
+						SpawnTree(xPos, yPos, terrainHeight, terrainNormal);
 					}
 				}
 				else
@@ -253,7 +254,55 @@ public class TreeDistribution : MonoBehaviour
 			Vector3 oldScale = tree.transform.localScale;
 			Vector3 newScale = new Vector3(oldScale.x + radiusAdjustment, oldScale.y + radiusAdjustment, oldScale.z);
 
-			//tree.GetComponent<PlantScript>().type = (Random.Range(0f, 1f) > 0.5f) ? PlantScript.PlantType.Tree1 : PlantScript.PlantType.Tree2;
+			//Assign a random plant from the list of plants specified by the user
+			int plantNr = Random.Range(0, plants3D.Length);
+			string type = plants3D[plantNr].tag;
+			PlantScript.PlantType plantType = PlantScript.PlantType.Tree1;
+			switch (type)
+			{
+				case "Palm_DualBended":
+					plantType = PlantScript.PlantType.PalmDualBended;
+					break;
+				case "Palm_Dual":
+					plantType = PlantScript.PlantType.PalmDual;
+					break;
+				case "Palm_SingleBended":
+					plantType = PlantScript.PlantType.PalmSingleBended;
+					break;
+				case "Palm_Single":
+					plantType = PlantScript.PlantType.PalmSingle;
+					break;
+				case "Palm_Trio":
+					plantType = PlantScript.PlantType.PalmTrio;
+					break;
+			}
+			tree.GetComponent<PlantScript>().type = plantType;
+
+			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+			plants[plants.Count - 1].transform.localScale = newScale;
+		}
+		else
+		{
+			plants.Add(Instantiate(tree, new Vector3(x, y, -1f), Quaternion.identity) as GameObject);
+		}
+		plants[plants.Count - 1].GetComponent<PlantScript>().ChangeColor();
+		plants[plants.Count - 1].GetComponent<PlantScript>().spawnHeight = height;
+	}
+	/// <summary>
+	/// Creates the tree at the specified position with the height and normal parameter for 3D generation on terrain
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="height"></param>
+	/// <param name="normal"></param>
+	void SpawnTree(float x, float y, float height, Vector3 normal)
+	{
+		if (randomizeRadius)
+		{
+			float radiusAdjustment = Random.Range(-scaling * r, scaling * r);
+			Vector3 oldScale = tree.transform.localScale;
+			Vector3 newScale = new Vector3(oldScale.x + radiusAdjustment, oldScale.y + radiusAdjustment, oldScale.z);
+
 			//Assign a random plant from the list of plants specified by the user
 			int plantNr = Random.Range(0, plants3D.Length);
 			string type = plants3D[plantNr].tag;
@@ -288,6 +337,7 @@ public class TreeDistribution : MonoBehaviour
 
 		plants[plants.Count - 1].GetComponent<PlantScript>().ChangeColor();
 		plants[plants.Count - 1].GetComponent<PlantScript>().spawnHeight = height;
+		plants[plants.Count - 1].GetComponent<PlantScript>().spawnNormal = normal;
 
 	}
 

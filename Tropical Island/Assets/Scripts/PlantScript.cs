@@ -7,10 +7,12 @@ public class PlantScript : MonoBehaviour
 
 	public enum PlantType { Tree1, Tree2, PalmDualBended, PalmDual, PalmSingleBended, PalmSingle, PalmTrio };
 	public PlantType type;
-	public bool useShadeTolerance = true;
-	public bool spawningEnabled = true;
+	[HideInInspector]
+	public Vector3 spawnNormal = new Vector3();
 	[HideInInspector]
 	public float spawnHeight = 0f;
+	public bool useShadeTolerance = true;
+	public bool spawningEnabled = true;
 
 	private Color color;            //Color of the plant
 	private PlantHolder ph;

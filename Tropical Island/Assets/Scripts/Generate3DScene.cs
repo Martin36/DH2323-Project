@@ -18,6 +18,7 @@ public class Generate3DScene : MonoBehaviour
 	private List<GameObject> plants3D;
 	private List<GameObject> plants2D;
 	private bool useTerrain;
+	private bool useRotation = false;
 	private float xSizeTerrain, ySizeTerrian, xSize2D, ySize2D;
 
 	void Awake()
@@ -118,6 +119,17 @@ public class Generate3DScene : MonoBehaviour
 			Vector3 scalingVector = plants3D[plants3D.Count - 1].transform.localScale;
 			scalingVector *= scaling;
 			plants3D[plants3D.Count - 1].transform.localScale = scalingVector;
+
+			if (useRotation)
+			{
+				Vector3 normal = plant.GetComponent<PlantScript>().spawnNormal;
+				/*
+				Quaternion facing = plants3D[plants3D.Count - 1].transform.rotation;
+				Quaternion rotation = Quaternion.LookRotation(normal);
+				rotation *= facing;
+				*/
+				plants3D[plants3D.Count - 1].transform.rotation = Quaternion.FromToRotation(Vector3.up, normal);
+			}
 			Destroy2DPlants();
 		}
 	}
