@@ -2,7 +2,9 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
-
+/// <summary>
+/// Script for jumping from the start screen to the 2D simulation scene
+/// </summary>
 public class CreateDistribution : MonoBehaviour
 {
 
@@ -23,12 +25,17 @@ public class CreateDistribution : MonoBehaviour
 		terrain = ph.terrain1;
 		createDistButton = GetComponentInChildren<Button>();
 	}
-
+	/// <summary>
+	/// This function is called when the "Create Distribution" button is pressed
+	/// </summary>
 	public void StartCreateDistribution()
 	{
 		ph.SaveData(plants, terrain);
 		SceneManager.LoadScene("2D_Plant_Simulation");
 	}
+	/// <summary>
+	/// This function initializes the dropdown lists for choosing the plants
+	/// </summary>
 	public void InitDropdowns()
 	{
 		if (plantLists == null)
@@ -73,12 +80,17 @@ public class CreateDistribution : MonoBehaviour
 					break;
 			}
 		}
+		//When the plants has been assigned we want the Create Distribution to be interactable
 		if (!createDistButton.interactable)
 		{
 			createDistButton.interactable = true;
 		}
 	}
-
+	/// <summary>
+	/// The function which is called when the user changes any of the values in the dropdowns.
+	/// It sets that selected plant in the list of selected plants, in the right position.
+	/// </summary>
+	/// <param name="target">The Dropdown that has changed value</param>
 	void ChangePlant(Dropdown target)
 	{
 		int value = target.value;
@@ -102,7 +114,10 @@ public class CreateDistribution : MonoBehaviour
 				break;
 		}
 	}
-
+	/// <summary>
+	/// Called when the user make changes in terrain dropdown
+	/// </summary>
+	/// <param name="target"></param>
 	public void ChangeTerrain(Dropdown target)
 	{
 		int value = target.value;
